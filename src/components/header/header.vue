@@ -17,6 +17,8 @@
           {{seller.description}}/{{seller.deliveryTime}}
 
 
+
+
         </div>
         <!--活动-->
         <div class="support" v-if="seller.supports">
@@ -24,13 +26,13 @@
           <span class="text">{{seller.supports[0].description}}</span>
         </div>
       </div>
-      <div class="support-count" v-if="seller.supports">
+      <div class="support-count" v-if="seller.supports" @click="show()">
         <span class="count">{{seller.supports.length + '个'}}</span>
         <i class="icon-keyboard_arrow_right"></i>
       </div>
     </div>
     <!--公告-->
-    <div class="notice-wrapper">
+    <div class="notice-wrapper" @click="show()">
       <span class="notice-title"></span><span class="notice-text">{{seller.bulletin}}</span>
       <i class="icon-keyboard_arrow_right"></i>
     </div>
@@ -38,12 +40,31 @@
     <div class="background">
       <img :src="seller.avatar" width="100%" height="100%" alt="">
     </div>
+    <!--遮罩-->
+    <div class="detail" v-show="detailShow">
+      <!--内容-->
+      <!--关闭按钮-->
+      <div class="detail_wrapper clearfix">
+        <div class="detail-main">
+
+        </div>
+      </div>
+
+      <div class="detail-close ta-c">
+        <i class="icon-close"></i>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
   export default {
     name: 'header',
+    data(){
+      return {
+        detailShow: false
+      }
+    },
     props: {
       seller: {
         type: Object
@@ -51,6 +72,11 @@
     },
     mounted(){
       this.iconClassMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee']
+    },
+    methods: {
+      show(){
+        this.detailShow = true;
+      }
     }
 
   }
@@ -197,6 +223,39 @@
       z-index: -1;
       /*模糊效果*/
       filter: blur(10px);
+    }
+    .detail {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      top: 0;
+      left: 0;
+      background: rgba(7, 17, 27, 0.8);
+      overflow: auto;
+      .detail_wrapper {
+        width: 100%;
+        min-height: 100%;
+        .detail-main {
+          .mt(64);
+          .pb(64);
+          .name{
+            .lh(16);
+            .fs(16);
+            font-weight: 700;
+          }
+
+        }
+        .detail-close {
+          position: relative;
+          width: 32px;
+          height: 32px;
+          margin-top: -64px;
+          clear: both;
+          .fs(32);
+          color: rgba(255, 255, 255, 0.5);
+        }
+      }
     }
   }
 
