@@ -1,0 +1,98 @@
+@import "./variables.less";
+@import "./property.less";
+@import "./style.css";
+
+body,ol,ul,h1,h2,h3,h4,h5,h6,p,th,td,dl,dd,form,fieldset,legend,input,textarea,select{margin:0;padding:0}
+body{-webkit-text-size-adjust:100%; font-size: 100%}
+a{color:#2d374b;text-decoration:none}
+a:hover{color:#cd0200;text-decoration:none}
+em{font-style:normal}
+li{list-style:none}
+img{border:0;vertical-align:middle}
+table{border-collapse:collapse;border-spacing:0}
+p{word-wrap:break-word}
+
+//动画
+.fade-enter-active,.fade-leave-active{
+  transform: translateX(200%);
+}
+.fade-enter,.fade-leave-active{
+  transition:all 0.5s ease;
+}
+
+.text-indent{
+  text-indent: 50em;
+}
+
+
+.fs(@px){
+  font-size: unit(@px / 37.5 ,rem);
+}
+
+.w(@px){
+  width: unit(@px / 37.5 ,rem);
+}
+
+.h(@px){
+  height: unit(@px / 37.5 ,rem);
+}
+.lh(@px){
+  line-height: unit(@px / 37.5 ,rem);
+}
+// 外边距
+.mt(@px) {
+  margin-top: unit(@px / 37.5, rem);
+}
+.ml(@px) {
+  margin-left: unit(@px / 37.5, rem);
+}
+.mr(@px) {
+  margin-right: unit(@px / 37.5, rem);
+}
+.mb(@px) {
+  margin-bottom: unit(@px / 37.5, rem);
+}
+//内边距
+.pt(@px) {
+  padding-top: unit(@px / 37.5, rem);
+}
+.pl(@px) {
+  padding-left: unit(@px / 37.5, rem);
+}
+.pr(@px) {
+  padding-right: unit(@px / 37.5, rem);
+}
+.pb(@px) {
+  padding-bottom: unit(@px / 37.5, rem);
+}
+
+.padding-lg{
+  padding: 30px;
+}
+.padding-md{
+  padding: 20px;
+}
+.padding-sm{
+  padding: 10px;
+}
+
+.bottomBtn{
+  position: fixed;
+  bottom: 0;
+  left: 0;
+}
+body,html{
+  font-weight: 200
+
+}
+.clearfix{
+  display: inline-block;
+  &:after{
+    display: block;
+    content: '';
+    height: 0;
+    line-height: 0;
+    clear: both;
+    visibility: hidden;
+  }
+}
