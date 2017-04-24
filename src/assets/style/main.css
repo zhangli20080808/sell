@@ -113,14 +113,6 @@ table {
 p {
   word-wrap: break-word;
 }
-.fade-enter-active,
-.fade-leave-active {
-  transform: translateX(200%);
-}
-.fade-enter,
-.fade-leave-active {
-  transition: all 0.5s ease;
-}
 .text-indent {
   text-indent: 50em;
 }

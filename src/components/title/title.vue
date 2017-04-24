@@ -1,13 +1,20 @@
 <template>
   <div id="title_line">
     <div class="line"></div>
-    <div class="text">优惠信息</div>
+    <div class="text">{{text}}</div>
     <div class="line"></div>
   </div>
 </template>
 
 <script>
+  export default{
+      data(){
+          return{
 
+          }
+      },
+    props:['text']
+  }
 </script>
 
 <style scoped lang="less">
@@ -16,7 +23,7 @@
   #title_line{
     display: flex;
     width: 80%;
-    margin: 30px auto 24px auto;
+    margin: 28px auto 24px auto;
     .line{
       flex: 1;
       position: relative;
@@ -26,6 +33,7 @@
     .text{
       padding: 0 12px;
       font-size: 14px;
+      font-weight: 700;
     }
   }
 
