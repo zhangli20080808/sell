@@ -19,6 +19,7 @@
 
 
 
+
         </div>
         <!--活动-->
         <div class="support" v-if="seller.supports">
@@ -46,7 +47,11 @@
       <!--关闭按钮-->
       <div class="detail_wrapper clearfix">
         <div class="detail-main">
-
+          <h2 class="name">{{seller.name}}</h2>
+          <div class="star">
+            <star :size="48" :score="seller.score"></star>
+          </div>
+          <title_line></title_line>
         </div>
       </div>
 
@@ -58,6 +63,8 @@
 </template>
 
 <script>
+  import star from '@/components/star/star'
+  import title_line from '@/components/title/title'
   export default {
     name: 'header',
     data(){
@@ -77,6 +84,10 @@
       show(){
         this.detailShow = true;
       }
+    },
+    components: {
+      star,
+      title_line
     }
 
   }
@@ -225,6 +236,7 @@
       filter: blur(10px);
     }
     .detail {
+      text-align: center;
       position: fixed;
       width: 100%;
       height: 100%;
@@ -239,12 +251,16 @@
         .detail-main {
           .mt(64);
           .pb(64);
-          .name{
+          .name {
             .lh(16);
             .fs(16);
             font-weight: 700;
           }
-
+        ;
+          .star {
+            margin-top: 18px;
+            padding: 2px 0;
+          }
         }
         .detail-close {
           position: relative;
