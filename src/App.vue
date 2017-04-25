@@ -34,7 +34,7 @@
 //            console.log(res.data.goods)
          if(res.data.errno === ERR_OK){
              this.seller = res.data.seller;
-//           console.log(this.seller)
+//           console.log(this.goods)
          }
         })
     },
