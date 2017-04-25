@@ -2,7 +2,7 @@
   <div id="goods">
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
-  <li v-for="(item,index) in goods" @click="menuClick(index,$event)" :class="index===menuCurrentIndex?'menu-item-selected':'menu-item'">          <span class="text">
+        <li v-for="(item,index) in goods" @click="menuClick(index,$event)" :class="index===menuCurrentIndex?'menu-item-selected':'menu-item'">          <span class="text">
             <span v-show="item.type>0" class="icon" :class="iconClassMap[item.type]"></span>{{item.name}}
           </span>
         </li>
@@ -32,12 +32,15 @@
         </li>
       </ul>
     </div>
+    <!--我们传入两个参数 配送费 起送费  -->
+    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice= "seller.minPrice"></shopcart>
   </div>
 
 </template>
 
 <script>
   import BScroll from 'better-scroll'
+  import shopcart from '@/components/shopcart/shopcart'
   let ERR_OK = 0;
   export default {
     name: 'goods',
@@ -49,7 +52,7 @@
       }
     },
     props: {
-      type: Object
+      seller: Object
     },
     //1.0我们使用ready  2我们使用mounted 实例化完成后默认查询某个方法
     mounted() {
@@ -118,8 +121,11 @@
          }
        }
        return 0
+     },
    },
-    }
+   components:{
+     shopcart
+   }
 
   }
 </script>
@@ -262,6 +268,10 @@
         }
       }
 
+    }
+
+    .shopcart{
+      // position: absolute;
     }
   }
 
