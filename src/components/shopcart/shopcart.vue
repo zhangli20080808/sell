@@ -148,7 +148,7 @@ export default {
             right: 0;
             width: 24px;
             height: 16px;
-            .lh(16);
+            line-height: 16px;
             .fs(9);
             border-radius: 14px;
             font-weight: 700;
