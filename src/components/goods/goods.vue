@@ -36,7 +36,7 @@
       </ul>
     </div>
     <!--我们传入两个参数 配送费 起送费  -->
-    <shopcart :deliveryPrice="seller.deliveryPrice" :minPrice= "seller.minPrice"></shopcart>
+    <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice= "seller.minPrice"></shopcart>
   </div>
 
 </template>
@@ -53,6 +53,7 @@
         goods: [],
         listHeight: [],
         foodsScrollY: 0,
+        selectedFoods: []
       }
     },
     props: {
@@ -126,6 +127,18 @@
        }
        return 0
      },
+     selectFoods(){
+      //  找到了所有被选择的商品
+       let foods = [];
+       this.goods.forEach((item)=>{
+         item.foods.forEach((food)=>{
+           if(food.count){
+             foods.push(food)
+           }
+         })
+       })
+      return foods;
+     }
    },
    components:{
      shopcart,

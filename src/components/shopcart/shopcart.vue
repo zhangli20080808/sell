@@ -36,14 +36,7 @@ export default {
     // 都可以通过selectfood去变化
     selectFoods :{
       type : Array,
-      default(){
-        return [
-          {
-            price:10,
-            count:3
-          }
-        ];
-      }
+      default: []
     },
     minPrice:{
       type : Number,
