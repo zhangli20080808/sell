@@ -36,7 +36,7 @@
         </div>
       </div>
 
-      <div class="content-right">
+      <div class="content-right" @click.stop.prevent="pay">
         <div class="pay" :class="payClass">
           {{payDesc}}
 
@@ -48,7 +48,7 @@
       <div class="cart-list" v-show="listShow">
         <div class="list-header">
           <h1 class="title f-l">购物车</h1>
-          <span class="name f-r">清空</span>
+          <span class="name f-r" @click="clearCart">清空</span>
         </div>
         <div class="list-content" ref="listContent">
           <ul>
@@ -168,6 +168,17 @@
       hideBackdrop() {
         this.listShow = false
       },
+      clearCart(){
+         this.selectFoods.forEach((food)=>{
+             food.count = 0;
+         })
+      },
+      pay(){
+          if(this.totalPrice<this.minPrice){
+              return
+          }
+          window.alert(`需支付${this.totalPrice}元`)
+      }
     },
     components: {
       cartControl
@@ -288,7 +299,7 @@
       position: absolute;
       top: 0;
       left: 0;
-      z-index: 50;
+      z-index: -1;
       background: #fff;
       // -100%相对于当前自身的高度
       transform: translate3d(0, -100%, 0);
@@ -345,7 +356,8 @@
       bottom: 0;
       left: 0;
       background: rgba(7, 17, 27, 0.6);
-      z-index: 40;
+      backdrop-filter: blur(10px);
+      z-index: -2;
       &.fade-backdrop-enter-active, &.fade-backdrop-leave-active {
         transition: opacity 0.4s;
       }
