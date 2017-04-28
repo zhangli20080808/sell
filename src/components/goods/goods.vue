@@ -14,7 +14,7 @@
         <li v-for="item in goods" class="item-list food-list-hook">
           <h1 class="title">{{item.name}}</h1>
           <ul>
-            <li v-for="food in item.foods" class="food-item">
+            <li v-for="food in item.foods" class="food-item" @click="goDetail(food)">
               <div class="icon">
                 <img :src="food.icon" width="57" height="57">
               </div>
@@ -39,6 +39,10 @@
     </div>
     <!--我们传入两个参数 配送费 起送费  -->
     <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
+
+    <Food :food="selectedFood" ref="myFood" v-if="selectedFood"></Food>
+
+
   </div>
 
 </template>
@@ -47,6 +51,8 @@
   import BScroll from 'better-scroll'
   import shopcart from '@/components/shopcart/shopcart'
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
+  import Food from '@/components/food/food'
+
   let ERR_OK = 0;
   export default {
     name: 'goods',
@@ -55,6 +61,7 @@
         goods: [],
         listHeight: [],
         foodsScrollY: 0,
+        selectedFood: ''
       }
     },
     props: {
@@ -112,6 +119,12 @@
         }
         // 通过这个index值，我们通知右侧应该滚动到哪里
         this.foodsScroll.scrollTo(0, -this.listHeight[index], 300)
+      },
+      goDetail(food){
+        this.selectedFood = food;
+        this.$nextTick(()=>{
+            this.$refs.myFood.show()
+        })
       }
     },
     computed: {
@@ -143,7 +156,8 @@
     },
     components: {
       shopcart,
-      cartcontrol
+      cartcontrol,
+      Food
     }
 
   }
