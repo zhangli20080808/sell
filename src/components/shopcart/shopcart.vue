@@ -50,7 +50,7 @@
           <h1 class="title f-l">购物车</h1>
           <span class="name f-r">清空</span>
         </div>
-        <div class="list-content">
+        <div class="list-content" ref="listContent">
           <ul>
             <li v-for="food in selectFoods" class="food">
               <span class="name">{{food.name}}</span>
@@ -74,6 +74,8 @@
 
 <script>
   import cartControl from '@/components/cartcontrol/cartcontrol'
+  import BScroll from 'better-scroll'
+
 
   export default {
     data(){
@@ -150,6 +152,18 @@
           return
         }
         this.listShow = !this.listShow;
+        if(this.listShow){
+          this.$nextTick(()=>{
+              if(!this.scroll){
+                this.scroll = new BScroll(this.$refs.listContent,{
+                  click:true
+                })
+              }else {
+                  this.scroll.refresh()
+              }
+
+          })
+        }
       },
       hideBackdrop() {
         this.listShow = false
