@@ -38,11 +38,7 @@
       </ul>
     </div>
     <!--我们传入两个参数 配送费 起送费  -->
-<<<<<<< HEAD
     <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
-=======
-    <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice= "seller.minPrice"></shopcart>
->>>>>>> 1587107b8d3d9a5ff3868d664ee1dc42750a3b3c
   </div>
 
 </template>
@@ -59,7 +55,6 @@
         goods: [],
         listHeight: [],
         foodsScrollY: 0,
-        selectedFoods: []
       }
     },
     props: {
@@ -122,7 +117,6 @@
     computed: {
       // 左侧的索引应该在哪里
       menuCurrentIndex() {
-<<<<<<< HEAD
         for (let i = 0, l = this.listHeight.length; i < l; i++) {
           //  获得第一个高度
           let topHeight = this.listHeight[i]
@@ -151,36 +145,6 @@
       shopcart,
       cartcontrol
     }
-=======
-       for (let i = 0, l = this.listHeight.length; i < l; i++) {
-        //  获得第一个高度
-         let topHeight = this.listHeight[i]
-        //  获得下一个高度
-         let bottomHeight = this.listHeight[i + 1]
-         if (!bottomHeight || (this.foodsScrollY >= topHeight && this.foodsScrollY < bottomHeight)) {
-           return i
-         }
-       }
-       return 0
-     },
-     selectFoods(){
-      //  找到了所有被选择的商品
-       let foods = [];
-       this.goods.forEach((item)=>{
-         item.foods.forEach((food)=>{
-           if(food.count){
-             foods.push(food)
-           }
-         })
-       })
-      return foods;
-     }
-   },
-   components:{
-     shopcart,
-     cartcontrol
-   }
->>>>>>> 1587107b8d3d9a5ff3868d664ee1dc42750a3b3c
 
   }
 </script>

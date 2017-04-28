@@ -36,14 +36,10 @@ export default {
     // 都可以通过selectfood去变化
     selectFoods :{
       type : Array,
-<<<<<<< HEAD
       default(){
         return[
         ];
       }
-=======
-      default: []
->>>>>>> 1587107b8d3d9a5ff3868d664ee1dc42750a3b3c
     },
     minPrice:{
       type : Number,
