@@ -196,6 +196,7 @@
     .h(48);
     left: 0;
     bottom: 0;
+    z-index: 1000;
     .content {
       display: flex;
       background: #141d27;

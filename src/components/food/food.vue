@@ -18,6 +18,10 @@
                                                           v-show="food.oldPrice">￥{{food.price}}</span>
           </div>
         </div>
+        <div class="cartcontrol-wrapper" v-show="food.count>0">
+          <cartcontrol :food="food"></cartcontrol>
+        </div>
+        <div class="buy" v-show="!food.count|| food.count ===0" @click.stop.prevent="addFirst($event)">加入购物车</div>
       </div>
     </div>
   </transition>
@@ -26,7 +30,9 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   // 我们希望页面可以滚动不出现滚动条
+  import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
 
   export default {
@@ -54,7 +60,17 @@
       },
       hide(){
         this.showFlag = false
+      },
+      addFirst(event){
+//          防止pc多次点击
+        if(!event._constructed){
+            return
+        }
+        Vue.set(this.food,'count',1)
       }
+    },
+    components:{
+      cartcontrol
     }
   }
 
@@ -106,6 +122,7 @@
 
       }
       .content{
+        position: relative;
         padding:18px;
         .title{
           margin: 2px 0 8px 0;
@@ -141,6 +158,25 @@
             .ml(4);
           }
         }
+      }
+      .cartcontrol-wrapper{
+        position: absolute;
+        right: 12px;
+        bottom: 12px;
+      }
+      .buy{
+        position: absolute;
+        right: 18px;
+        bottom: 18px;
+        .h(24);
+        .lh(24);
+        .fs(10);
+        padding: 0 12px;
+        color: #fff;
+        background: rgb(0,160,220);
+        border-radius: 12px;
+        box-sizing: border-box;
+
       }
     }
   }
