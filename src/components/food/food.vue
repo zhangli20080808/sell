@@ -33,13 +33,18 @@
         <!--商品评价-->
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <ratingSelect :selectType="selectType" :onlyContent="onlyContent" :desc="desc"
-                        :ratings="food.ratings"></ratingSelect>
+          <span @click="filterEvel(item)" v-for="(item,index) in desc" class="item" :class="{'active':item.active,'bad':index==2,'badActive':item.active&&index==2}">
+            {{item.name}}<span class="count">{{item.count}}</span></span>
         </div>
+        <div class="switch" @click="evelflag=!evelflag">
+          <span class="icon-check_circle" :class="{'on':evelflag}"></span>
+          <span class="text">只看有内容的评价</span>
+        </div>
+
         <!--评论列表-->
         <div class="rating-wrapper">
           <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="rating in food.ratings" class="rating" >
+            <li v-for="(rating,index) in food.ratings" class="rating">
               <div class="no-wrapper" v-show="!food.ratings ||!food.ratings.length">
                 暂无数据
 
@@ -53,12 +58,12 @@
                 <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
                 {{rating.text}}
               </p>
-        </li>
-        </ul>
+            </li>
+          </ul>
+
+        </div>
 
       </div>
-
-    </div>
     </div>
   </transition>
 
@@ -71,7 +76,6 @@
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
   import split from '@/components/split/split'
-  import ratingSelect from '@/components/ratingselect/ratingselect'
 
   const POSITIVE = 0;
   const NAVIGATE = 1;
@@ -83,11 +87,20 @@
         showFlag: false,
         selectType: ALL,
         onlyContent: false,
-        desc: {
-          all: "全部",
-          positive: "推荐",
-          negative: "吐槽"
-        }
+        desc: [{
+          name: '全部',
+          count: this.food.ratings.length,
+          active: true
+        }, {
+          name: '推荐',
+          count: this.food.ratings.filter((data) => data.rateType === 0).length,
+          active: false
+        }, {
+          name: '吐槽',
+          count: this.food.ratings.filter((data) => data.rateType).length,
+          active: false
+        }],
+        evelflag: true
       }
     },
     props: {
@@ -131,11 +144,16 @@
 //              return type = this.selectType;
 //          }
 //      }
+      filterEvel(item){
+         this.desc.forEach((data)=>{
+             data.active = false
+         });
+        item.active  =true;
+      }
     },
     components: {
       cartcontrol,
       split,
-      ratingSelect
     }
   }
 
@@ -259,16 +277,60 @@
         }
       }
       .rating {
-        .pt(18);
+        padding: 18px 0;
+        margin: 0 18px;
+        border-bottom: 1px solid rgba(7,17,27,0.1);
         .title {
-          .ml(18);
           .fs(14);
           .lh(14);
           .h(14);
           color: rgb(7, 17, 27);
           font-weight: 700;
+          margin-bottom: 16px;
         }
-
+        .item {
+          display: inline-block;
+          padding: 8px 12px;
+          border-radius: 2px;
+          font-size: 12px;
+          margin-right: 8px;
+          color: rgb(77, 85, 93);
+          .count {
+            font-size: 8px;
+            margin-left: 2px;
+            line-height: 16px;
+          }
+          &.active {
+            color: white;
+            background: rgb(0, 169, 220);
+          }
+          &.bad {
+            background: rgba(77, 85, 93, 0.2)
+          }
+          &.badActive {
+            background: #4d555d
+          }
+        }
+      }
+      .switch{
+        .icon-check_circle{
+          display: inline-block;
+          font-size: 24px;
+          margin-right: 4px;
+          vertical-align: top;
+          color: rgb(147,153,159);
+          &.on{
+              color: #00c850;
+            }
+        }
+        padding:12px 18px;
+        font-size: 0;
+        .text{
+          font-size: 24px;
+          color: rgb(147,153,159);
+          display: inline-block;
+          vertical-align: top;
+        }
       }
       .rating-wrapper {
         padding: 0 18px;
@@ -276,41 +338,42 @@
           position: relative;
           padding: 16px 0;
           border-bottom: 1px solid #ccc;
+
           .user {
             position: absolute;
             top: 16px;
             right: 0;
             line-height: 12px;
-            .name{
+            .name {
               .fs(10);
-              color:rgb(147,153,159);
+              color: rgb(147, 153, 159);
               margin-right: 6px;
             }
-            .avatar{
+            .avatar {
               border-radius: 50%;
 
             }
           }
-          .time{
+          .time {
             margin-bottom: 6px;
             line-height: 12px;
             .fs(10);
-            color:rgb(147,153,159);
+            color: rgb(147, 153, 159);
           }
-          .text{
+          .text {
             .lh(16);
             .fs(12);
-            color: rgb(7,17,27);
-            .icon-thumb_down,.icon-thumb_up{
+            color: rgb(7, 17, 27);
+            .icon-thumb_down, .icon-thumb_up {
               .mr(4);
               .lh(16);
               .fs(12);
             }
-            .icon-thumb_up{
-              color: rgb(0,160,220);
+            .icon-thumb_up {
+              color: rgb(0, 160, 220);
             }
-            .icon-thumb_down{
-              color:rgb(147,153,159);
+            .icon-thumb_down {
+              color: rgb(147, 153, 159);
             }
           }
 
