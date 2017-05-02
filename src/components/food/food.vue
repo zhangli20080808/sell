@@ -17,11 +17,17 @@
             <span class="now">￥{{food.price}}</span><span class="old"
                                                           v-show="food.oldPrice">￥{{food.price}}</span>
           </div>
+
+          <div class="cartcontrol-wrapper" v-show="food.count>0">
+            <cartcontrol :food="food"></cartcontrol>
+          </div>
+          <div class="buy" v-show="!food.count|| food.count ===0" @click.stop.prevent="addFirst($event)">加入购物车</div>
         </div>
-        <div class="cartcontrol-wrapper" v-show="food.count>0">
-          <cartcontrol :food="food"></cartcontrol>
+        <split v-show="food.info"></split>
+        <div class="info" v-show="food.info">
+          <h1 class="title">商品信息</h1>
+          <p class="text">{{food.info}}</p>
         </div>
-        <div class="buy" v-show="!food.count|| food.count ===0" @click.stop.prevent="addFirst($event)">加入购物车</div>
       </div>
     </div>
   </transition>
@@ -34,6 +40,7 @@
   // 我们希望页面可以滚动不出现滚动条
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
+  import split from '@/components/split/split'
 
   export default {
     data(){
@@ -47,14 +54,14 @@
     methods: {
       show(){
         this.showFlag = true;
-        this.$nextTick(()=>{
-            if(!this.scroll){
-                this.scroll = new BScroll(this.$refs.food,{
-                    click:true
-                })
-            }else {
-                this.scroll.refresh()
-            }
+        this.$nextTick(() => {
+          if (!this.scroll) {
+            this.scroll = new BScroll(this.$refs.food, {
+              click: true
+            })
+          } else {
+            this.scroll.refresh()
+          }
 
         })
       },
@@ -63,14 +70,15 @@
       },
       addFirst(event){
 //          防止pc多次点击
-        if(!event._constructed){
-            return
+        if (!event._constructed) {
+          return
         }
-        Vue.set(this.food,'count',1)
+        Vue.set(this.food, 'count', 1)
       }
     },
-    components:{
-      cartcontrol
+    components: {
+      cartcontrol,
+      split
     }
   }
 
@@ -121,10 +129,10 @@
         }
 
       }
-      .content{
+      .content {
         position: relative;
-        padding:18px;
-        .title{
+        padding: 18px;
+        .title {
           margin: 2px 0 8px 0;
           .fs(14);
           .lh(14);
@@ -158,26 +166,43 @@
             .ml(4);
           }
         }
-      }
-      .cartcontrol-wrapper{
-        position: absolute;
-        right: 12px;
-        bottom: 12px;
-      }
-      .buy{
-        position: absolute;
-        right: 18px;
-        bottom: 18px;
-        .h(24);
-        .lh(24);
-        .fs(10);
-        padding: 0 12px;
-        color: #fff;
-        background: rgb(0,160,220);
-        border-radius: 12px;
-        box-sizing: border-box;
+        .cartcontrol-wrapper {
+          position: absolute;
+          right: 12px;
+          bottom: 12px;
+        }
+        .buy {
+          position: absolute;
+          right: 18px;
+          bottom: 18px;
+          .h(24);
+          .lh(24);
+          .fs(10);
+          padding: 0 12px;
+          color: #fff;
+          background: rgb(0, 160, 220);
+          border-radius: 12px;
+          box-sizing: border-box;
 
+        }
       }
+      .info{
+        padding: 18px;
+
+
+        .title{
+          .mb(16);
+          .fs(14);
+          .lh(14);
+          color: #000;
+        }
+        .text{
+          .lh(24);
+          .fs(12);
+          padding:0 8px;
+        }
+      }
+
     }
   }
 </style>
