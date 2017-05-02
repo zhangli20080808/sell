@@ -8,6 +8,7 @@
           <img :src="food.image" alt="" height="425" width="100%">
         </div>
         <div class="back" @click="hide"><i class="icon-arrow_lift"></i></div>
+        <!--商品详情-->
         <div class="content">
           <h1 class="title">{{food.name}}</h1>
           <div class="extra">
@@ -24,10 +25,17 @@
           <div class="buy" v-show="!food.count|| food.count ===0" @click.stop.prevent="addFirst($event)">加入购物车</div>
         </div>
         <split v-show="food.info"></split>
+        <!--商品信息-->
         <div class="info" v-show="food.info">
           <h1 class="title">商品信息</h1>
           <p class="text">{{food.info}}</p>
         </div>
+        <!--商品评价-->
+        <div class="rating">
+          <h1 class="title">商品评价</h1>
+          <ratingSelect :selectType="selectType" :onlyContent="onlyContent" :desc="desc" :ratings="food.ratings"></ratingSelect>
+        </div>
+
       </div>
     </div>
   </transition>
@@ -41,11 +49,23 @@
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
   import split from '@/components/split/split'
+  import ratingSelect from '@/components/ratingselect/ratingselect'
+
+  const POSITIVE = 0;
+  const NAVIGATE = 1;
+  const ALL = 2;
 
   export default {
     data(){
       return {
-        showFlag: false
+        showFlag: false,
+        selectType: ALL,
+        onlyContent: true,
+        desc: {
+          all: "全部",
+          positive: "推荐",
+          negative: "吐槽"
+        }
       }
     },
     props: {
@@ -54,6 +74,9 @@
     methods: {
       show(){
         this.showFlag = true;
+        // 我们需要初始化
+        this.selectType = ALL;
+        this.onlyContent = true;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.food, {
@@ -78,7 +101,8 @@
     },
     components: {
       cartcontrol,
-      split
+      split,
+      ratingSelect
     }
   }
 
@@ -186,21 +210,33 @@
 
         }
       }
-      .info{
+      .info {
         padding: 18px;
 
-
-        .title{
+        .title {
           .mb(16);
           .fs(14);
           .lh(14);
           color: #000;
         }
-        .text{
+        .text {
           .lh(24);
           .fs(12);
-          padding:0 8px;
+          padding: 0 8px;
         }
+      }
+      .rating{
+        .pt(18);
+        .title{
+          .ml(18);
+          .fs(14);
+          .lh(14);
+          .h(14);
+          color: rgb(7, 17, 27);
+          font-weight: 700;
+        }
+
+
       }
 
     }
