@@ -59,6 +59,7 @@
   @import "../../assets/style/main.less";
 
   #star {
+    display: inline-block;
     .star-item {
       background-repeat: no-repeat;
       display: inline-block;
@@ -114,7 +115,7 @@
       .star-item {
         width: 10px;
         height: 10px;
-        .mr(22);
+        .mr(10);
         background-size: 10px 10px;
         /*三种状态  半星 全星 没有*/
         /*星星的最后一个没有margin－right*/

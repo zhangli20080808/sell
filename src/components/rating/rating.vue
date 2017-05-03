@@ -55,7 +55,10 @@
                 </div>
                 <div class="text">
                   {{evel.text}}
-
+                </div>
+                <div class="recommend">
+                  <span class="icon icon-thumb_up" v-show="evel.recommend.length"></span>
+                  <span class="dish" v-for="dish in evel.recommend">{{dish}}</span>
                 </div>
               </div>
             </li>
@@ -282,6 +285,70 @@
             color: rgb(147, 153, 159);
             display: inline-block;
             vertical-align: top;
+          }
+        }
+        .evel-list {
+          .evel {
+            display: flex;
+            padding: 18px 0;
+            margin: 0 18px;
+            .avatar {
+              flex :0 0 28px;
+              width: 28px;
+              margin-right: 12px;
+              img{
+                border-radius: 50%;
+              }
+            }
+            .content {
+              flex :1;
+              .user {
+                .fs(10);
+                .lh(12);
+                .name{}
+                .rateTime{
+                  position: absolute;
+                  right: 18px;
+                }
+              }
+              .star-wrapper {
+                .pt(6);
+                .mb(8);
+                .fs(0);
+                .star{
+                  display: inline-block;
+                }
+                .deliveryTime{
+                  .fs(10);
+                  .pl(20);
+                  font-weight: 200;
+                }
+              }
+              .text {
+                .fs(12);
+                .lh(18);
+              }
+              .recommend{
+                .pt(12);
+                .fs(12);
+                .lh(18);
+                .icon{
+                  .lh(12);
+                  color: rgb(0,160,220) ;
+                  .fs(10)
+                }
+                .dish{
+                  color: rgb(147,153,159);
+                  .fs(9);
+                  .lh(16);
+                  border: 1px solid rgba(7,17,27,0.11);
+                  padding: 2px 6px;
+                  margin-top: 4px;
+                  margin-right: 6px;
+                  white-space: normal;
+                }
+              }
+            }
           }
         }
       }
