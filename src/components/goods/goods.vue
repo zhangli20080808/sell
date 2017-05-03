@@ -40,7 +40,7 @@
     <!--我们传入两个参数 配送费 起送费  -->
     <shopcart :selectFoods="selectFoods" :deliveryPrice="seller.deliveryPrice" :minPrice="seller.minPrice"></shopcart>
 
-    <Food :food="selectedFood" ref="myFood" v-if="selectedFood"></Food>
+    <Foot :food="selectedFood" ref="myFood" v-if="selectedFood"></Foot>
 
 
   </div>
@@ -48,15 +48,12 @@
 </template>
 
 <script>
-  import Vue from 'vue'
   import BScroll from 'better-scroll'
   import shopcart from '@/components/shopcart/shopcart'
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
-  import Food from '@/components/food/food'
+  import Foot from '@/components/food/food'
 
   let ERR_OK = 0;
-  const eventHub = new Vue();
-
   export default {
     name: 'goods',
     data(){
@@ -160,7 +157,7 @@
     components: {
       shopcart,
       cartcontrol,
-      Food
+      Foot
     }
 
   }

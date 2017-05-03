@@ -53,7 +53,7 @@
                 <span class="name">{{evel.username}}</span>
                 <img :src="evel.avatar" width="24" height="24" alt="" class="avatar">
               </div>
-              <div class="time">{{evel.rateTime | time}}</div>
+              <div class="time">{{evel.rateTime}}</div>
               <p class="text">
                 <span :class="{'icon-thumb_down':evel.rateType===1,'icon-thumb_up':evel.rateType===0}"></span>
                 {{evel.text}}
