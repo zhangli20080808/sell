@@ -171,7 +171,7 @@
   #rating {
     position: absolute;
     width: 100%;
-    top: 187px;
+    top: 179px;
     bottom: 0;
     .fs(12);
     overflow: hidden;

@@ -1,13 +1,250 @@
 <template>
-  <div id="seller">
-    this is seller
+  <div id="seller" ref="sellerWrapper">
+    <div class="seller-content">
+      <div class="info">
+        <div class="title">
+          <div class="text">{{seller.name}}</div>
+          <div class="star-wrapper">
+            <star :size="36" :score="seller.score"></star>
+            <span class="rate-count">({{seller.ratingCount}})</span>
+            <span class="sell-count">月售{{seller.sellCount}}单</span>
+          </div>
+
+          <div class="collect">
+            <span class="icon-favorite" @click="collectflag=!collectflag" :class="{'active':collectflag}"></span>
+            <span class="text" >{{collectflag?'已收藏':'收藏'}}</span>
+          </div>
+
+        </div>
+        <div class="remark">
+          <div class="block">
+            <h2>起送价</h2>
+            <div class="content">
+              <span class="num">{{seller.minPrice}}</span>元
+
+
+
+
+            </div>
+          </div>
+          <div class="block">
+            <h2>商家配送</h2>
+            <div class="content">
+              <span class="num">{{seller.deliveryPrice}}</span>元
+
+
+
+
+            </div>
+          </div>
+          <div class="block">
+            <h2>平均配送时间</h2>
+            <div class="content">
+              <span class="num">{{seller.deliveryTime}}</span>分钟
+
+
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <split></split>
+      <!--活动公告-->
+      <div class="activities">
+        <div class="bulletin">
+          <h1>公告与活动</h1>
+          <div class="content">
+            {{seller.bulletin}}
+
+
+          </div>
+        </div>
+      </div>
+      <!--内容-->
+      <div class="supports">
+        <ul>
+          <li class="item" v-for="item in seller.supports">
+            <iconClassMap :iconType="item.type"></iconClassMap>
+            <span class="text">{{item.description}}</span>
+          </li>
+        </ul>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
+  import star from '@/components/star/star'
+  import split from '@/components/split/split'
+  import iconClassMap from '@/components/iconClassMap/iconClassMap'
+  import BScroll from 'better-scroll'
+
+  var ERR_OK = 0;
+  export default {
+    data(){
+      return {
+        collectflag: false
+    }
+    },
+    props: {
+      seller: {
+        type: Object
+      }
+    },
+    components: {
+      star,
+      split,
+      iconClassMap
+    },
+    mounted(){
+      this._init();
+    },
+    methods: {
+      _init(){
+        this.$http.get('api/json/sell.json').then((res) => {
+          //            console.log(res.data.goods)
+          if (res.data.errno === ERR_OK) {
+            this.seller = res.data.seller;
+//             console.log(this.ratings);
+            // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了
+            this.$nextTick(() => {
+              this.scroll = new BScroll(this.$refs.sellerWrapper, {
+                click: true
+              })
+            })
+          }
+        });
+      },
+    }
+  }
 
 </script>
 
-<style>
+<style lang="less" scoped>
+  @import "../../assets/style/main.less";
+
+  #seller {
+    position: absolute;
+    width: 100%;
+    top: 179px;
+    bottom: 0;
+    .fs(12);
+    overflow: hidden;
+    .seller-content {
+      .info {
+        padding: 18px 0;
+        margin: 0 18px;
+        .title {
+          .pb(18);
+          border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+          .text {
+            .fs(14);
+            color: rgb(7, 17, 27);
+            .lh(14);
+          }
+          .star-wrapper {
+            .pt(8);
+            .fs(0);
+            .rate-count {
+              .fs(10);
+              .pl(10);
+              .mr(10);
+            }
+            .sell-count {
+              .fs(10);
+              .lh(18);
+              color: rgb(77, 85, 93);
+            }
+          }
+          .collect {
+            position: absolute;
+            top: 34px;
+            right: 16px;
+            text-align: center;
+            width: 74px;
+            display: block;
+            .icon-favorite {
+              .fs(18);
+              .lh(24);
+              color: #d4d6d9;
+              &.active {
+                color: rgb(240, 20, 20);
+              }
+            }
+            .text {
+              .lh(24);
+              vertical-align: top;
+            }
+          }
+        }
+        .remark {
+          display: flex;
+          .block {
+            flex: 1;
+            .mt(18);
+            border-right: 1px solid rgba(7, 17, 27, 0.1);
+            text-align: center;
+            &:last-child {
+              border: none;
+            }
+            h2 {
+              .lh(10);
+              .fs(10);
+              .mb(6);
+            }
+            .content {
+              .fs(10);
+              padding-top: 8px;
+              .lh(24);
+              font-weight: 400;
+              .num {
+                .fs(24);
+              }
+            }
+          }
+        }
+      }
+      .activities {
+        padding: 18px 0;
+        .bulletin {
+          margin: 0 18px;
+          h1 {
+            .fs(14);
+            color: #07111b;
+            .lh(14);
+          }
+          .content {
+            padding: 8px 12px 16px 12px;
+            .fs(12);
+            font-weight: 200;
+            color: rgb(240, 20, 20);
+            line-height: 24px;
+          }
+        }
+      }
+      .supports {
+        margin: 0 18px;
+        .item {
+          padding: 16px;
+          border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+          .fs(0);
+          .icon {
+            width: 16px;
+            height: 16px;
+            vertical-align: top;
+            margin-right: 6px;
+          }
+          .text {
+            .fs(12);
+            font-weight: 200;
+            color: rgb(7, 17, 27);
+            .lh(16);
+          }
+
+        }
+      }
+    }
+  }
 
 </style>
