@@ -48,12 +48,15 @@
 </template>
 
 <script>
+  import Vue from 'vue'
   import BScroll from 'better-scroll'
   import shopcart from '@/components/shopcart/shopcart'
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import Food from '@/components/food/food'
 
   let ERR_OK = 0;
+  const eventHub = new Vue();
+
   export default {
     name: 'goods',
     data(){

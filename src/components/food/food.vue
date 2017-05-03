@@ -33,7 +33,8 @@
         <!--商品评价-->
         <div class="rating">
           <h1 class="title">商品评价</h1>
-          <span @click="filterEvel(item)" v-for="(item,index) in desc" class="item" :class="{'active':item.active,'bad':index==2,'badActive':item.active&&index==2}">
+          <span @click="filterEvel(item)" v-for="(item,index) in desc" class="item"
+                :class="{'active':item.active,'bad':index==2,'badActive':item.active&&index==2}">
             {{item.name}}<span class="count">{{item.count}}</span></span>
         </div>
         <div class="switch" @click="evelflag=!evelflag">
@@ -43,26 +44,23 @@
 
         <!--评论列表-->
         <div class="rating-wrapper">
-          <ul v-show="food.ratings && food.ratings.length">
-            <li v-for="(rating,index) in food.ratings" class="rating">
+          <ul>
+            <li v-for="evel in evelArr" class="rating">
               <div class="no-wrapper" v-show="!food.ratings ||!food.ratings.length">
                 暂无数据
-
               </div>
               <div class="user">
-                <span class="name">{{rating.username}}</span>
-                <img :src="rating.avatar" width="24" height="24" alt="" class="avatar">
+                <span class="name">{{evel.username}}</span>
+                <img :src="evel.avatar" width="24" height="24" alt="" class="avatar">
               </div>
-              <div class="time">{{rating.rateTime}}</div>
+              <div class="time">{{evel.rateTime | time}}</div>
               <p class="text">
-                <span :class="{'icon-thumb_up':rating.rateType===0,'icon-thumb_down':rating.rateType===1}"></span>
-                {{rating.text}}
+                <span :class="{'icon-thumb_down':evel.rateType===1,'icon-thumb_up':evel.rateType===0}"></span>
+                {{evel.text}}
               </p>
             </li>
           </ul>
-
         </div>
-
       </div>
     </div>
   </transition>
@@ -76,6 +74,7 @@
   import cartcontrol from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
   import split from '@/components/split/split'
+  import time from '../../filter/time.js'
 
   const POSITIVE = 0;
   const NAVIGATE = 1;
@@ -108,10 +107,10 @@
     },
     methods: {
       show(){
-        this.showFlag = true;
+        this.showFlag = !this.showFlag;
         // 我们需要初始化
-        this.selectType = ALL;
-        this.onlyContent = true;
+//        this.selectType = ALL;
+//        this.onlyContent = true;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.food, {
@@ -131,7 +130,8 @@
         if (!event._constructed) {
           return
         }
-        Vue.set(this.food, 'count', 1)
+        Vue.set(this.food, 'count', 1);
+        this.$emit('cart.add', event.target)
       },
 //      needShow(type,text){
 //          //是否要显示内容  如果没有内容的话,不会被展示
@@ -145,15 +145,33 @@
 //          }
 //      }
       filterEvel(item){
-         this.desc.forEach((data)=>{
-             data.active = false
-         });
-        item.active  =true;
+        this.desc.forEach((data) => {
+          data.active = false
+        });
+        item.active = true;
       }
     },
     components: {
       cartcontrol,
       split,
+    },
+    computed:{
+      evelArr() {
+        let selectIndex = 0;
+        this.desc.forEach((data, index) => {
+          if (data.active) {
+            selectIndex = index
+          }
+        });
+        if (this.scroll) {
+          this.$nextTick(() => {
+            this.scroll.refresh()
+          })
+        }
+        return selectIndex ? this.food.ratings.filter((data) =>
+          this.evelflag ? data.rateType === selectIndex - 1 && data.text : data.rateType === selectIndex - 1)
+          : this.food.ratings.filter((data) => this.evelflag ? data.text : true)
+      }
     }
   }
 
@@ -279,7 +297,7 @@
       .rating {
         padding: 18px 0;
         margin: 0 18px;
-        border-bottom: 1px solid rgba(7,17,27,0.1);
+        border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         .title {
           .fs(14);
           .lh(14);
@@ -312,22 +330,22 @@
           }
         }
       }
-      .switch{
-        .icon-check_circle{
+      .switch {
+        .icon-check_circle {
           display: inline-block;
           font-size: 24px;
           margin-right: 4px;
           vertical-align: top;
-          color: rgb(147,153,159);
-          &.on{
-              color: #00c850;
-            }
+          color: rgb(147, 153, 159);
+          &.on {
+            color: #00c850;
+          }
         }
-        padding:12px 18px;
+        padding: 12px 18px;
         font-size: 0;
-        .text{
+        .text {
           font-size: 24px;
-          color: rgb(147,153,159);
+          color: rgb(147, 153, 159);
           display: inline-block;
           vertical-align: top;
         }

@@ -102,6 +102,9 @@
         default: 0
       }
     },
+    mounted(){
+//      this.$on('cart-add')
+    },
     computed: {
       // 总价格
       totalPrice(){
