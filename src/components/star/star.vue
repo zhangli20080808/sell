@@ -89,7 +89,10 @@
       .star-item {
         width: 15px;
         height: 15px;
-        .mr(22);
+        .mr(6);
+        @media screen and (max-width: 320px){
+          .mr(2);
+        }
         background-size: 15px 15px;
         /*三种状态  半星 全星 没有*/
         /*星星的最后一个没有margin－right*/
