@@ -15,17 +15,6 @@
         <!--描述-->
         <div class="description">
           {{seller.description}}/{{seller.deliveryTime}}
-
-
-
-
-
-
-
-
-
-
-
         </div>
         <!--活动-->
         <div class="support" v-if="seller.supports">

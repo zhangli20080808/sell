@@ -74,6 +74,8 @@
   import star from  '@/components/star/star'
   import split from '@/components/split/split'
   import BScroll from 'better-scroll'
+
+
   var ERR_OK = 0;
   export default{
     name: 'rating',

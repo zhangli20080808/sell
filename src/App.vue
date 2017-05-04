@@ -20,24 +20,42 @@
 
 <script>
   import header from './components/header/header.vue'
+  import {urlParse} from './assets/js/util'
+
   const ERR_OK = 0;
   export default {
     name: 'app',
     data() {
       return {
-          seller:{}
-      }
+        //一开始我们的seller 应该是有参数的 而这个参数就是根据url获取到的  我们收藏要用 我们去拿一下这个id
+        seller: {
+          id: (() => {
+            let queryParam = urlParse();
+//              console.log(queryParam)
+            return queryParam.id;
+          })()
+        }
+      };
     },
     mounted(){
-        this.$http.get('api/json/sell.json').then((res)=>{
-//            console.log(res)
+      this.$http.get('api/json/sell.json?id=' + this.seller.id).then((res) => {
+        console.log(res)
 //            console.log(res.data.errno)
 //            console.log(res.data.goods)
-         if(res.data.errno === ERR_OK){
-             this.seller = res.data.seller;
+        if (res.data.errno === ERR_OK) {
+//          this.seller = res.data.seller;
 //           console.log(this.goods)
-         }
-        })
+//          这里有一个方法 支持三个参数 给对象拓展属性的一个方法 最终要接受的一个结果
+          this.seller = Object.assign({}, this.seller, res.data);
+          console.log(this.seller.id)  //未定义的 我们添加的id属性被干掉了
+        }
+      })
+      this.$http.get('api/json/sell.json').then((res) => {
+        if (res.data.errno === ERR_OK) {
+          this.seller = res.data.seller;
+        }
+      })
+
     },
     components: {
       'v-header': header

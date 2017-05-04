@@ -10,8 +10,9 @@
             <span class="sell-count">月售{{seller.sellCount}}单</span>
           </div>
 
+          <!--收藏我们要和商家有一个id去关联 我们保存在localstorage中一个变量 -->
           <div class="collect">
-            <span class="icon-favorite" @click="collectflag=!collectflag" :class="{'active':collectflag}"></span>
+            <span class="icon-favorite" @click="toggleFavorite()" :class="{'active':collectflag}"></span>
             <span class="text" >{{collectflag?'已收藏':'收藏'}}</span>
           </div>
 
@@ -131,7 +132,7 @@
             this.$nextTick(() => {
               this.scroll = new BScroll(this.$refs.sellerWrapper, {
                 click: true
-              })
+              });
               this._initPicScroll();
             })
           }
@@ -141,13 +142,16 @@
         if (this.picsScroll) {
           return
         }
-        const PIC_WIDTH = 120
-        const MARGIN = 6
+        const PIC_WIDTH = 120;
+        const MARGIN = 6;
         let picLen = this.seller.pics.length;
         this.$refs.picList.style.width = PIC_WIDTH * picLen + MARGIN * (picLen - 1) + 'px';
         this.picsScroll = new BScroll(this.$refs.picsWrapper, {
           scrollX: true
         })
+      },
+      toggleFavorite(){
+         this.collectflag = !this.collectflag;
       }
     }
   }
@@ -279,7 +283,7 @@
       }
       .seller-imgs{
         margin: 18px;
-        word-spacing: normal;
+        white-space: nowrap;
         overflow: hidden;
         h1{
           .fs(12);
@@ -288,7 +292,9 @@
         }
         .img-wrapper{
 
-          img{}
+          img{
+            margin-right: 6px;
+          }
         }
       }
       .seller-info{
