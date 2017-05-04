@@ -105,7 +105,8 @@
   import iconClassMap from '@/components/iconClassMap/iconClassMap'
   import BScroll from 'better-scroll'
   import {saveToLocal} from './../../assets/js/save'
-  let ERR_OK = 0;
+
+
   export default {
     data(){
       return {
