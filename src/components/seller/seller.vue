@@ -12,8 +12,8 @@
 
           <!--收藏我们要和商家有一个id去关联 我们保存在localstorage中一个变量 -->
           <div class="collect">
-            <span class="icon-favorite" @click="toggleFavorite()" :class="{'active':collectflag}"></span>
-            <span class="text" >{{collectflag?'已收藏':'收藏'}}</span>
+            <span class="icon-favorite" @click="toggleFavorite" :class="{'active':collectflag}"></span>
+            <span class="text">{{favoriteText}}</span>
           </div>
 
         </div>
@@ -22,6 +22,7 @@
             <h2>起送价</h2>
             <div class="content">
               <span class="num">{{seller.minPrice}}</span>元
+
 
 
 
@@ -36,12 +37,14 @@
 
 
 
+
             </div>
           </div>
           <div class="block">
             <h2>平均配送时间</h2>
             <div class="content">
               <span class="num">{{seller.deliveryTime}}</span>分钟
+
 
 
             </div>
@@ -57,6 +60,7 @@
           <h1>公告与活动</h1>
           <div class="content">
             {{seller.bulletin}}
+
 
 
           </div>
@@ -75,7 +79,7 @@
       <!--商家实景-->
       <div class="seller-imgs">
         <h1>商家实景</h1>
-        <div class="img-wrapper" ref="picsWrapper" >
+        <div class="img-wrapper" ref="picsWrapper">
           <div ref="picList">
             <img :src="pic" alt="" v-for="pic in seller.pics" width="120" height="90">
           </div>
@@ -100,13 +104,13 @@
   import split from '@/components/split/split'
   import iconClassMap from '@/components/iconClassMap/iconClassMap'
   import BScroll from 'better-scroll'
-
-  var ERR_OK = 0;
+  import {saveToLocal} from './../../assets/js/save'
+  let ERR_OK = 0;
   export default {
     data(){
       return {
         collectflag: false
-    }
+      }
     },
     props: {
       seller: {
@@ -118,25 +122,33 @@
       split,
       iconClassMap
     },
+    computed: {
+      favoriteText(){
+        return this.collectflag ? '已收藏' : '收藏'
+      }
+    },
+    watch: {
+      'seller'() {
+        this.$nextTick(() => {
+          this._init();
+        });
+      }
+    },
     mounted(){
-      this._init();
+        this.$nextTick(()=>{
+          this._init();
+//          this._initPicScroll();
+        })
     },
     methods: {
       _init(){
-        this.$http.get('api/json/sell.json').then((res) => {
-          //            console.log(res.data.goods)
-          if (res.data.errno === ERR_OK) {
-            this.seller = res.data.seller;
-//             console.log(this.ratings);
-            // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了
-            this.$nextTick(() => {
-              this.scroll = new BScroll(this.$refs.sellerWrapper, {
-                click: true
-              });
-              this._initPicScroll();
-            })
-          }
-        });
+        if (!this.scroll) {
+          this.scroll = new BScroll(this.$refs.sellerWrapper, {
+            click: true
+          });
+        } else {
+          this.scroll.refresh();
+        }
       },
       _initPicScroll() {
         if (this.picsScroll) {
@@ -150,8 +162,12 @@
           scrollX: true
         })
       },
-      toggleFavorite(){
-         this.collectflag = !this.collectflag;
+      toggleFavorite(event){
+        if (!event._constructed) {
+          return
+        }
+        this.collectflag = !this.collectflag;
+        saveToLocal(this.seller.id, 'collectflag', this.collectflag)
       }
     }
   }
@@ -281,38 +297,38 @@
 
         }
       }
-      .seller-imgs{
+      .seller-imgs {
         margin: 18px;
         white-space: nowrap;
         overflow: hidden;
-        h1{
+        h1 {
           .fs(12);
           .lh(12);
           .mb(12);
         }
-        .img-wrapper{
+        .img-wrapper {
 
-          img{
+          img {
             margin-right: 6px;
           }
         }
       }
-      .seller-info{
-        h1{
+      .seller-info {
+        h1 {
           margin: 0 18px;
           padding: 18px 0 12px 0;
-          border-bottom: 1px solid rgba(7,17,27,0.1);
+          border-bottom: 1px solid rgba(7, 17, 27, 0.1);
         }
-        .info-list{
-          .info{
+        .info-list {
+          .info {
             .fs(12);
-            padding:16px 12px;
+            padding: 16px 12px;
             .lh(16);
-            color: rgb(7,17,27);
+            color: rgb(7, 17, 27);
             font-weight: 200;
-            border-bottom: 1px solid rgba(7,17,27,0.1);
-            &:last-child{
-              border:none;
+            border-bottom: 1px solid rgba(7, 17, 27, 0.1);
+            &:last-child {
+              border: none;
             }
           }
         }

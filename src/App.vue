@@ -31,15 +31,17 @@
         seller: {
           id: (() => {
             let queryParam = urlParse();
-//              console.log(queryParam)
+//              console.log(queryParam.id);
             return queryParam.id;
           })()
         }
       };
     },
     mounted(){
-      this.$http.get('api/json/sell.json?id=' + this.seller.id).then((res) => {
-        console.log(res)
+      console.log(this.seller.id)  //未定义的 我们添加的id属性被干掉了
+
+
+      this.$http.get('/api/json/sell.json?id=' + this.seller.id).then((res) => {
 //            console.log(res.data.errno)
 //            console.log(res.data.goods)
         if (res.data.errno === ERR_OK) {
@@ -49,12 +51,13 @@
           this.seller = Object.assign({}, this.seller, res.data);
           console.log(this.seller.id)  //未定义的 我们添加的id属性被干掉了
         }
-      })
+      });
       this.$http.get('api/json/sell.json').then((res) => {
         if (res.data.errno === ERR_OK) {
           this.seller = res.data.seller;
         }
-      })
+      });
+
 
     },
     components: {

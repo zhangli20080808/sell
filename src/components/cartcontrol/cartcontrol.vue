@@ -36,7 +36,6 @@ export default {
       if(!event._constructed){
         return;
       }
-      console.log('1');
       if(!this.food.count){
         // this.food.count = 1;  我们设置一个count属性 1 最终就能通知到这个dom繁盛变化
         Vue.set(this.food,'count',1)
