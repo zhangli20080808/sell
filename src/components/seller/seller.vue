@@ -70,7 +70,27 @@
           </li>
         </ul>
       </div>
+      <split></split>
+      <!--商家实景-->
+      <div class="seller-imgs">
+        <h1>商家实景</h1>
+        <div class="img-wrapper" ref="picsWrapper" >
+          <div ref="picList">
+            <img :src="pic" alt="" v-for="pic in seller.pics" width="120" height="90">
+          </div>
+        </div>
+      </div>
+      <split></split>
+      <!--商家信息-->
+      <div class="seller-info">
+        <h1>商家信息</h1>
+        <ul class="info-list">
+          <li class="info" v-for="info in seller.infos">{{info}}</li>
+        </ul>
+      </div>
     </div>
+
+
   </div>
 </template>
 
@@ -112,10 +132,23 @@
               this.scroll = new BScroll(this.$refs.sellerWrapper, {
                 click: true
               })
+              this._initPicScroll();
             })
           }
         });
       },
+      _initPicScroll() {
+        if (this.picsScroll) {
+          return
+        }
+        const PIC_WIDTH = 120
+        const MARGIN = 6
+        let picLen = this.seller.pics.length;
+        this.$refs.picList.style.width = PIC_WIDTH * picLen + MARGIN * (picLen - 1) + 'px';
+        this.picsScroll = new BScroll(this.$refs.picsWrapper, {
+          scrollX: true
+        })
+      }
     }
   }
 
@@ -244,7 +277,41 @@
 
         }
       }
+      .seller-imgs{
+        margin: 18px;
+        word-spacing: normal;
+        overflow: hidden;
+        h1{
+          .fs(12);
+          .lh(12);
+          .mb(12);
+        }
+        .img-wrapper{
+
+          img{}
+        }
+      }
+      .seller-info{
+        h1{
+          margin: 0 18px;
+          padding: 18px 0 12px 0;
+          border-bottom: 1px solid rgba(7,17,27,0.1);
+        }
+        .info-list{
+          .info{
+            .fs(12);
+            padding:16px 12px;
+            .lh(16);
+            color: rgb(7,17,27);
+            font-weight: 200;
+            border-bottom: 1px solid rgba(7,17,27,0.1);
+            &:last-child{
+              border:none;
+            }
+          }
+        }
+      }
     }
   }
-
 </style>
+
