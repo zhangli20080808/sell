@@ -13,8 +13,8 @@
         <router-link to="/seller">商家</router-link>
       </div>
     </div>
-    <!--我们可以通过路由去传递一些对象信息  -->
-    <router-view :seller="seller"></router-view>
+    <!--我们可以通过路由去传递一些对象信息  router切换我们的组件状态发生改变 我们使用keep-alive保留组件状态 保留在内存中 需要的时候再恢复-->
+    <keep-alive><router-view :seller="seller"></router-view></keep-alive>
   </div>
 </template>
 
