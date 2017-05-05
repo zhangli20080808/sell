@@ -104,13 +104,16 @@
   import split from '@/components/split/split'
   import iconClassMap from '@/components/iconClassMap/iconClassMap'
   import BScroll from 'better-scroll'
-  import {saveToLocal} from './../../assets/js/save'
+  import {saveToLocal,loadFormLocal} from './../../assets/js/save'
 
 
   export default {
     data(){
       return {
-        collectflag: false
+          //我们从本地缓存里面去读
+        collectflag: (()=>{
+            return loadFormLocal(this.seller.id,'collectflag',false)
+        })()
       }
     },
     props: {

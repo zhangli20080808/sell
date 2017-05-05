@@ -26,4 +26,18 @@ export function saveToLocal(id, key, val) {
 //读取  读不到的时候我们传入一个def作为我们的默认值
 export function loadFormLocal(id, key, def) {
 
+  let seller = window.localStorage.__seller__;
+  //如果没有，直接返回
+  if (!seller){
+    return def;
+  }
+  //拿到对象
+  seller = JSON.parse(seller)[id];
+  //如果id为空，还是返回
+  if (!seller){
+    return def;
+  }
+  //favourite
+  let ret = seller[key];
+  return ret || def;
 }
