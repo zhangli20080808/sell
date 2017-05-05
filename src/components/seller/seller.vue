@@ -153,6 +153,7 @@
         } else {
           this.scroll.refresh();
         }
+        this._initPicScroll();
       },
       _initPicScroll() {
         if (this.picsScroll) {
