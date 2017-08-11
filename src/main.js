@@ -6,6 +6,8 @@ import router from './router'
 
 import axios from 'axios'
 
+console.log('test');
+
 Vue.prototype.$http = axios ;//把axios对象挂载到vue原型上
 
 
