@@ -2,8 +2,8 @@
   <div id="app">
     <!--头部组件-->
     <v-header :seller="seller"></v-header>
-    <div class="tab">
-      <div class="tab-item">
+    <div class="tab border-b-1px">
+      <div class="tab-item border-1px">
         <router-link to="/goods">商品</router-link>
       </div>
       <div class="tab-item">
@@ -45,7 +45,7 @@
 //           console.log(this.goods)
 //          这里有一个方法 支持三个参数 给对象拓展属性的一个方法 最终要接受的一个结果
           this.seller = Object.assign({}, this.seller, res.data.seller);
-          console.log(this.seller.id)  //未定义的 我们添加的id属性被干掉了
+          console.log(this.seller)  //未定义的 我们添加的id属性被干掉了
         }
       });
     },
@@ -55,33 +55,23 @@
   }
 </script>
 
-<style lang="less" scoped>
 
-  @import "assets/style/main.less";
+<style lang="stylus" rel="stylesheet/stylus">
+  @import "./common/stylus/mixin.styl"
 
-  #app {
-    .tab {
-      display: flex;
-      width: 100%;
-      .h(40);
-      .lh(40);
-      border-bottom: 1px solid rgba(7, 17, 27, .1);
-      .tab-item {
-        flex: 1;
-        text-align: center;
-        /*& 表示他的父元素 这里指tab-item*/
-        & > a {
-          /*自动充满了盒子*/
-          display: block;
-          .fs(14);
-
-          color: rgb(77, 85, 93);
-          &.router-link-active {
-            color: rgb(240, 20, 20);
-          }
-        }
-      }
-    }
-  }
-
+  .tab
+    display: flex
+    width: 100%
+    height: 40px
+    line-height: 40px
+    border-b-1px(rgba(7, 17, 27, 0.1))
+  .tab-item
+      flex: 1
+      text-align: center
+      & > a
+        display: block
+        font-size: 14px
+        color: rgb(77, 85, 93)
+        &.active
+          color: rgb(240, 20, 20)
 </style>
