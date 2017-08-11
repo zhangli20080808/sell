@@ -42,7 +42,6 @@
 
     <Foot :food="selectedFood" ref="myFood" v-if="selectedFood"></Foot>
 
-
   </div>
 
 </template>
@@ -159,7 +158,6 @@
       cartcontrol,
       Foot
     }
-
   }
 </script>
 

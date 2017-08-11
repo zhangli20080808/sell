@@ -4,8 +4,9 @@
 
     <div class="content-wrapper">
       <!--商家图片-->
-      <div class="avatar">
-        <img :src="seller.avatar" width="66" height="66" alt="">
+      <div class="avatar" :style="{background:'url('+seller.avatar+')'}">
+        <!-- <img :src="seller.avatar" width="66" height="66" alt=""> -->
+
       </div>
       <div class="content">
         <div class="title">
@@ -61,7 +62,6 @@
         <div class="detail-close ta-c" @click="closeShow()">
           <i class="icon-close"></i>
         </div>
-
       </div>
     </transition>
 
@@ -331,15 +331,11 @@
             .lh(24);
           }
         }
-        .detail-close {
-          position: relative;
-          width: 32px;
-          height: 32px;
-          margin-top: -64px;
-          clear: both;
-          .fs(32);
-          color: rgba(255, 255, 255, 0.5);
-        }
+      }
+      .detail-close {
+        clear: both;
+        .fs(32);
+        color: rgba(255, 255, 255, 0.5);
       }
     }
   }

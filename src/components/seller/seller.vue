@@ -27,6 +27,7 @@
 
 
 
+
             </div>
           </div>
           <div class="block">
@@ -38,12 +39,14 @@
 
 
 
+
             </div>
           </div>
           <div class="block">
             <h2>平均配送时间</h2>
             <div class="content">
               <span class="num">{{seller.deliveryTime}}</span>分钟
+
 
 
 
@@ -60,6 +63,7 @@
           <h1>公告与活动</h1>
           <div class="content">
             {{seller.bulletin}}
+
 
 
 
@@ -104,15 +108,15 @@
   import split from '@/components/split/split'
   import iconClassMap from '@/components/iconClassMap/iconClassMap'
   import BScroll from 'better-scroll'
-  import {saveToLocal,loadFormLocal} from './../../assets/js/save'
+  import {saveToLocal, loadFormLocal} from './../../assets/js/save'
 
 
   export default {
     data(){
       return {
-          //我们从本地缓存里面去读
-        collectflag: (()=>{
-            return loadFormLocal(this.seller.id,'collectflag',false)
+        //我们从本地缓存里面去读
+        collectflag: (() => {
+          return loadFormLocal(this.seller.id, 'collectflag', false)
         })()
       }
     },
@@ -139,10 +143,10 @@
       }
     },
     mounted(){
-        this.$nextTick(()=>{
-          this._init();
+      this.$nextTick(() => {
+        this._init();
 //          this._initPicScroll();
-        })
+      })
     },
     methods: {
       _init(){
@@ -156,16 +160,22 @@
         this._initPicScroll();
       },
       _initPicScroll() {
-        if (this.picsScroll) {
-          return
+        if (this.seller.pics) {
+          let picWidth = 120;
+          let margin = 6;
+          let width = (picWidth + margin) * this.seller.pics.length - margin;
+          this.$refs.picList.style.width = width + 'px';
+          this.$nextTick(() => {
+            if (!this.picScroll) {
+              this.picScroll = new BScroll(this.$refs.picsWrapper, {
+                scrollX: true,
+                eventPassthrough: 'vertical'
+              });
+            } else {
+              this.picScroll.refresh();
+            }
+          });
         }
-        const PIC_WIDTH = 120;
-        const MARGIN = 6;
-        let picLen = this.seller.pics.length;
-        this.$refs.picList.style.width = PIC_WIDTH * picLen + MARGIN * (picLen - 1) + 'px';
-        this.picsScroll = new BScroll(this.$refs.picsWrapper, {
-          scrollX: true
-        })
       },
       toggleFavorite(event){
         if (!event._constructed) {
