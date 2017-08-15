@@ -9,37 +9,19 @@
           </div>
           <div class="num" v-show="totalCount>0">
             {{totalCount}}
-
           </div>
         </div>
         <div class="price" :class="{'highlight':totalPrice>0}">
-          {{totalPrice}}元
-
-
-
-
-
-
-
-
+          ￥{{totalPrice}}元
         </div>
         <div class="desc">
-          另需配送费{{deliveryPrice}}元
-
-
-
-
-
-
-
-
+          另需配送费￥{{deliveryPrice}}元
         </div>
       </div>
 
       <div class="content-right" @click.stop.prevent="pay">
         <div class="pay" :class="payClass">
           {{payDesc}}
-
         </div>
       </div>
     </div>
@@ -75,8 +57,6 @@
 <script>
   import cartControl from '@/components/cartcontrol/cartcontrol'
   import BScroll from 'better-scroll'
-
-
   export default {
     data(){
       return {
@@ -126,7 +106,7 @@
       payDesc(){
         if (this.totalPrice === 0) {
           // 我们使用$符传入
-          return `¥${this.minPrice}元起送`
+          return `${this.minPrice}元起送`
         } else if (this.totalPrice < this.minPrice) {
           var diff = this.minPrice - this.totalPrice;
           return `还差${diff}元起送`
@@ -157,13 +137,13 @@
         this.listShow = !this.listShow;
         if(this.listShow){
           this.$nextTick(()=>{
-              if(!this.scroll){
-                this.scroll = new BScroll(this.$refs.listContent,{
-                  click:true
-                })
-              }else {
-                  this.scroll.refresh()
-              }
+            if(!this.scroll){
+              this.scroll = new BScroll(this.$refs.listContent,{
+                click:true
+              })
+            }else {
+              this.scroll.refresh()
+            }
 
           })
         }
@@ -172,15 +152,19 @@
         this.listShow = false
       },
       clearCart(){
-         this.selectFoods.forEach((food)=>{
-             food.count = 0;
-         })
+        let clear = confirm('清空购物车？',)
+        if(clear == true){
+          this.selectFoods.forEach((food)=>{
+            food.count = 0;
+          })
+        }
+
       },
       pay(){
-          if(this.totalPrice<this.minPrice){
-              return
-          }
-          window.alert(`需支付${this.totalPrice}元`)
+        if(this.totalPrice<this.minPrice){
+          return
+        }
+        window.alert(`需支付${this.totalPrice}元`)
       }
     },
     components: {

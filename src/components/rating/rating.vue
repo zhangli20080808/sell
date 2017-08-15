@@ -82,7 +82,6 @@
     data(){
       return {
         ratings: [],
-        seller: {},
         classifyArr: [{
           name: '全部',
           count: 0,
@@ -100,6 +99,9 @@
       }
     },
     props: {
+      seller:{
+        type:Object
+      },
       food: Object
     },
     computed: {
@@ -129,11 +131,10 @@
     },
     methods: {
       _init(){
-        this.$http.get('api/json/sell.json').then((res) => {
-          //            console.log(res.data.goods)
+        this.$http.get('api/ratings').then((res) => {
+//          console.log(res.data.ratings)
           if (res.data.errno === ERR_OK) {
             this.ratings = res.data.ratings;
-            this.seller = res.data.seller;
 //             console.log(this.ratings);
             this._initClassifyArr();
             // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了

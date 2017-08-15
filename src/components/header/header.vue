@@ -4,8 +4,9 @@
 
     <div class="content-wrapper">
       <!--商家图片-->
-      <div class="avatar" :style="{background:'url('+seller.avatar+')'}">
-        <!-- <img :src="seller.avatar" width="66" height="66" alt=""> -->
+      <!--<div class="avatar" :style="{background:'url('+seller.avatar+')'}">-->
+      <div class="avatar">
+         <img :src="seller.avatar" width="66" height="66" alt="">
 
       </div>
       <div class="content">
@@ -39,7 +40,7 @@
     </div>
     <!--遮罩-->
     <transition name="fade">
-      <div class="detail" v-show="detailShow" @click="closeShow">
+      <div class="detail" v-show="detailShow">
         <!--内容-->
         <!--关闭按钮-->
         <div class="detail_wrapper clearfix">
@@ -57,9 +58,14 @@
             </ul>
             <title_line text="商家公告"></title_line>
             <p class="text">{{seller.bulletin}}</p>
+            <p class="text">{{seller.bulletin}}</p>
+            <p class="text">{{seller.bulletin}}</p>
+            <p class="text">{{seller.bulletin}}</p>
+            <p class="text">{{seller.bulletin}}</p>
+            <p class="text">{{seller.bulletin}}</p>
           </div>
         </div>
-        <div class="detail-close ta-c" @click="closeShow()">
+        <div class="detail-close" @click="closeShow()">
           <i class="icon-close"></i>
         </div>
       </div>
@@ -109,6 +115,7 @@
   #header {
     position: relative;
     color: #fff;
+    overflow: hidden;
     background: rgba(7, 17, 27, 0.5);
     .content-wrapper {
       position: relative;
@@ -153,6 +160,7 @@
         .lh(12);
         .icon {
           display: inline-block;
+          vertical-align: top;
           .w(12);
           .h(12);
           background-image: url("img/decrease_1@2x.png");
@@ -193,13 +201,12 @@
         text-align: center;
         .count {
           font-size: 10px;
-          font-weight: 200;
-          line-height: 22px;
-          .ml(2);
+          vertical-align: top;
         }
         .icon-keyboard_arrow_right {
           font-size: 10px;
           .ml(2);
+          .lh(24);
         }
       }
     }
@@ -248,14 +255,17 @@
       position: fixed;
       width: 100%;
       height: 100%;
-      z-index: 100;
+      z-index: 1001;
       top: 0;
       left: 0;
       overflow: auto;
       text-align: center;
       background: rgba(7, 17, 27, 0.8);
+      /*ios上面会有的模糊效果*/
+      backdrop-filter: blur(10px);
       &.fade-enter-active, &.fade-leave-active {
-        transition: opacity .5s
+        opacity: 1;
+        transition: opacity .5s;
       }
       &.fade-enter, &.fade-leave-active {
         opacity: 0
@@ -333,8 +343,12 @@
         }
       }
       .detail-close {
-        clear: both;
+        position: relative;
+        width: 32px;
+        height: 32px;
         .fs(32);
+        margin: -64px auto 0 auto;
+        clear: both;
         color: rgba(255, 255, 255, 0.5);
       }
     }

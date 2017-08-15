@@ -38,14 +38,14 @@
       };
     },
     mounted(){
-      this.$http.get('/api/json/sell.json?id=' + this.seller.id).then((res) => {
-//            console.log(res.data.goods)
+      this.$http.get('/api/seller?id=' + this.seller.id).then((res) => {
+//            console.log(res.data.seller)
         if (res.data.errno === ERR_OK) {
 //          this.seller = res.data.seller;
 //           console.log(this.goods)
 //          这里有一个方法 支持三个参数 给对象拓展属性的一个方法 最终要接受的一个结果
           this.seller = Object.assign({}, this.seller, res.data.seller);
-          console.log(this.seller)  //未定义的 我们添加的id属性被干掉了
+//          console.log(this.seller.id)  //未定义的 我们添加的id属性被干掉了
         }
       });
     },

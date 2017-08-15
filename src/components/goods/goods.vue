@@ -1,5 +1,6 @@
 <template>
   <div id="goods">
+    <!--左侧-->
     <div class="menu-wrapper" ref="menuWrapper">
       <ul>
         <li v-for="(item,index) in goods" @click="menuClick(index,$event)"
@@ -9,6 +10,7 @@
         </li>
       </ul>
     </div>
+    <!--右侧-->
     <div class="foods-wrapper" id="wrapper" ref="foodsWrapper">
       <ul>
         <li v-for="item in goods" class="item-list food-list-hook">
@@ -67,14 +69,14 @@
       seller: Object
     },
     //1.0我们使用ready  2我们使用mounted 实例化完成后默认查询某个方法
-    mounted() {
+    created() {
       this.iconClassMap = ['decrease', 'discount', 'special', 'invoice', 'guarantee'];
-      this.$http.get('api/json/sell.json').then((res) => {
-        //            console.log(res.data.goods)
+      this.$http.get('api/goods').then((res) => {
+//        console.log(res.data.goods)
         if (res.data.errno === ERR_OK) {
           this.goods = res.data.goods;
           // console.log(this.goods)
-          // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了
+          // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了  vue更新dom是一个异步的过程 真正发生变化是在nextTick后面
           this.$nextTick(() => {
             this._initScroll();
             this._calculateHeight();
@@ -95,7 +97,7 @@
 
         this.foodsScroll.on('scroll', (pos) => {
           this.foodsScrollY = Math.abs(Math.round(pos.y))
-          // console.log(this.foodsScrollY);
+//          console.log(this.foodsScrollY);
         })
       },
       _calculateHeight(){
@@ -111,18 +113,20 @@
         }
       },
       menuClick(index, event){
-        // 有个属性区别  浏览器原声的点击时间是没有这个属性的 也就是在pc上的时候，我把它return掉
+        // 有个属性区别  浏览器原声的点击事件是没有这个属性的 也就是在pc上的时候，我把它return掉
         // 我们自定义触发的时候  为true
         if (!event._constructed) {
           return
         }
+//        console.log(index);
         // 通过这个index值，我们通知右侧应该滚动到哪里
         this.foodsScroll.scrollTo(0, -this.listHeight[index], 300)
       },
       goDetail(food){
+//          console.log(food)
         this.selectedFood = food;
         this.$nextTick(()=>{
-            this.$refs.myFood.show()
+          this.$refs.myFood.show()
         })
       }
     },
@@ -134,6 +138,7 @@
           let topHeight = this.listHeight[i]
           //  获得下一个高度
           let bottomHeight = this.listHeight[i + 1]
+//         判断下最后一个
           if (!bottomHeight || (this.foodsScrollY >= topHeight && this.foodsScrollY < bottomHeight)) {
             return i
           }
@@ -177,7 +182,9 @@
       text-align: center;
     }
     .menu-wrapper {
+      /*等分  缩放   站位空间*/
       flex: 0 0 80px;
+      /*这个地方 不写width再安卓下面可能会有点问题*/
       width: 80px;
       background: #f3f5f7;
       .menu-item-selected {
@@ -191,9 +198,10 @@
         padding: 0 12px;
         text-align: center;
         overflow: hidden;
+        border-left: 2px solid #00a0dc;
       }
       .menu-item {
-        /*垂直居中我们一般用table*/
+        /*垂直居中我们一般用table  一般可能有两行*/
         display: table;
         width: 56px;
         height: 54px;
@@ -265,7 +273,6 @@
             .lh(14);
             .h(14);
             color: rgb(7, 17, 27);
-            .ml(0);
           }
           .desc {
             .mb(8);
