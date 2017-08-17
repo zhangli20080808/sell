@@ -99,10 +99,8 @@
       }
     },
     props: {
-      seller:{
-        type:Object
-      },
-      food: Object
+      food: Object,
+      seller:Object
     },
     computed: {
       evelArr() {
@@ -132,10 +130,9 @@
     methods: {
       _init(){
         this.$http.get('api/ratings').then((res) => {
-//          console.log(res.data.ratings)
+//                      console.log(res.data.ratings)
           if (res.data.errno === ERR_OK) {
             this.ratings = res.data.ratings;
-//             console.log(this.ratings);
             this._initClassifyArr();
             // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了
             this.$nextTick(() => {

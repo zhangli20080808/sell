@@ -33,36 +33,33 @@
         <!--商品评价-->
         <div class="rating">
           <h1 class="title">商品评价</h1>
+          <span @click="filterEvel(item)" v-for="(item,index) in desc" class="item"
+                :class="{'active':item.active,'bad':index==2,'badActive':item.active&&index==2}">
+            {{item.name}}<span class="count">{{item.count}}</span></span>
+        </div>
+        <div class="switch" @click="evelflag=!evelflag">
+          <span class="icon-check_circle" :class="{'on':evelflag}"></span>
+          <span class="text">只看有内容的评价</span>
+        </div>
 
-          <ratingselect
-            @select="selectRating"
-            @toggle="toggleContent"
-            :selectType="selectType"
-            :onlyContent="onlyContent"
-            :desc="desc"
-            :ratings="food.ratings"
-          ></ratingselect>
-
-
-          <!--评论列表-->
-          <div class="rating-wrapper">
-            <ul v-show="food.ratings && food.ratings.length">
-              <li v-for="evel in food.ratings" v-show="needShow(evel.rateType,evel.text)" class="rating">
-                <div class="no-wrapper" v-show="!food.ratings ||!food.ratings.length">
-                  暂无数据
-                </div>
-                <div class="user">
-                  <span class="name">{{evel.username}}</span>
-                  <img :src="evel.avatar" width="24" height="24" alt="" class="avatar">
-                </div>
-                <div class="time">{{evel.rateTime | time}}</div>
-                <p class="text">
-                  <span :class="{'icon-thumb_down':evel.rateType===1,'icon-thumb_up':evel.rateType===0}"></span>
-                  {{evel.text}}
+        <!--评论列表-->
+        <div class="rating-wrapper">
+          <ul>
+            <li v-for="evel in evelArr" class="rating">
+              <div class="no-wrapper" v-show="!food.ratings ||!food.ratings.length">
+                暂无数据
+              </div>
+              <div class="user">
+                <span class="name">{{evel.username}}</span>
+                <img :src="evel.avatar" width="24" height="24" alt="" class="avatar">
+              </div>
+              <div class="time">{{evel.rateTime | time}}</div>
+              <p class="text">
+                <span :class="{'icon-thumb_down':evel.rateType===1,'icon-thumb_up':evel.rateType===0}"></span>
+                {{evel.text}}
               </p>
-              </li>
-            </ul>
-          </div>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -78,34 +75,43 @@
   import BScroll from 'better-scroll'
   import split from '@/components/split/split'
   import time from '../../filter/time.js'
-  import ratingselect from '@/components/ratingselect/ratingselect';
 
-
+  const POSITIVE = 0;
+  const NAVIGATE = 1;
   const ALL = 2;
-
   export default {
     data(){
       return {
         showFlag: false,
         selectType: ALL,
-        onlyContent: false,
-        desc: {
-          all: '全部',
-          positive: '推荐',
-          negative: '吐槽'
-        },
+        onlyContent: true,
+        desc: [{
+          name: '全部',
+          count: this.food.ratings.length,
+          active: true
+        }, {
+          name: '推荐',
+          count: this.food.ratings.filter((data) => data.rateType === 0).length,
+          active: false
+        }, {
+          name: '吐槽',
+          count: this.food.ratings.filter((data) => data.rateType ===1).length,
+          active: false
+        }],
         evelflag: true
       }
     },
     props: {
-      food: Object
+      food: {
+          type: Object
+      }
     },
     methods: {
       show(){
         this.showFlag = !this.showFlag;
         // 我们需要初始化
-        this.selectType = ALL;
-        this.onlyContent = true;
+//        this.selectType = ALL;
+//        this.onlyContent = true;
         this.$nextTick(() => {
           if (!this.scroll) {
             this.scroll = new BScroll(this.$refs.food, {
@@ -126,32 +132,19 @@
           return
         }
         Vue.set(this.food, 'count', 1);
-//        this.$emit('cart.add', event.target)
+        this.$emit('cart.add', event.target)
       },
-      needShow(type,text){
-        //是否要显示内容  如果没有内容的话,不会被展示
-        if(this.onlyContent && !text){
-          return false;
-        }
-
-        if(this.selectType === ALL){
-          return true
-        }else {
-          return type == this.selectType;
-        }
-      },
-      selectRating(type) {
-        this.selectType = type;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
-      },
-      toggleContent() {
-        this.onlyContent = !this.onlyContent;
-        this.$nextTick(() => {
-          this.scroll.refresh();
-        });
-      },
+//      needShow(type,text){
+//          //是否要显示内容  如果没有内容的话,不会被展示
+//          if(this.onlyContent && !text){
+//              return false;
+//          }
+//          if(this.selectType === ALL){
+//              return true
+//          }else {
+//              return type = this.selectType;
+//          }
+//      }
       filterEvel(item){
         this.desc.forEach((data) => {
           data.active = false
@@ -162,9 +155,24 @@
     components: {
       cartcontrol,
       split,
-      ratingselect
     },
     computed:{
+      evelArr() {
+        let selectIndex = 0;
+        this.desc.forEach((data, index) => {
+          if (data.active) {
+            selectIndex = index
+          }
+        });
+        if (this.scroll) {
+          this.$nextTick(() => {
+            this.scroll.refresh()
+          })
+        }
+        return selectIndex ? this.food.ratings.filter((data) =>
+          this.evelflag ? data.rateType === selectIndex - 1 && data.text : data.rateType === selectIndex - 1)
+          : this.food.ratings.filter((data) => this.evelflag ? data.text : true)
+      }
     }
   }
 

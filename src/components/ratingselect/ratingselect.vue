@@ -3,9 +3,12 @@
   <div class="ratingselect">
     <!--类型-->
     <div class="rating-type">
-      <span @click="select(2,$event)" class="block positive" :class="{'active':selectType ===2}">{{desc.all}}<span class="count">{{ratings.length}}</span></span>
-      <span @click="select(0,$event)" class="block positive" :class="{'active':selectType ===0}">{{desc.positive}}<span class="count">{{positive.length}}</span></span>
-      <span @click="select(1,$event)" class="block negative" :class="{'active':selectType ===1}">{{desc.negative}}<span class="count">{{negative.length}}</span></span>
+      <span @click="select(2,$event)" class="block positive" :class="{'active':selectType===2}">{{desc.all}}<span
+        class="count">{{ratings.length}}</span></span>
+      <span @click="select(0,$event)" class="block positive" :class="{'active':selectType===0}">{{desc.positive}}<span
+        class="count">{{positives.length}}</span></span>
+      <span @click="select(1,$event)" class="block negative" :class="{'active':selectType===1}">{{desc.negative}}<span
+        class="count">{{negatives.length}}</span></span>
     </div>
     <div @click="toggleContent" class="switch" :class="{'on':onlyContent}">
       <span class="icon-check_circle"></span>
@@ -39,44 +42,41 @@
       },
       desc: {
         type: Object,
-        default(){
+        default() {
           return {
-            all: "全部",
-            positive: "满意",
-            negative: "不满意"
+            all: '全部',
+            positive: '满意',
+            negative: '不满意'
           };
         }
       }
-
     },
     methods:{
       select(type,event){
-          if(!event._constructed){
-              return
-          }
-          this.selectType = type;
-          // 我们子组件怎么通知父组件去发生变化 子组件是不能直接改变数据的 这里我们把type传出去 父组件监听到以后，就可以去改变这个值了
-        this.$emit('ratingtype.select',type)
+        if(!event._constructed){
+          return
+        }
+        // 我们子组件怎么通知父组件去发生变化 子组件是不能直接改变数据的 这里我们把type传出去 父组件监听到以后，就可以去改变这个值了
+        this.$emit('select',type)
       },
       toggleContent(event){
         if(!event._constructed){
           return;
         }
-        this.onlyContent = !this.onlyContent;
-        this.$emit('content.toggle',this.onlyContent)
+        this.$emit('toggle')
       }
     },
-//    我们如何拿到 0 和  1的 值呢 通过计算属性去过滤数组
+    //    我们如何拿到 0 和  1的 值呢 通过计算属性去过滤数组
     computed:{
-       positive(){
-           return this.ratings.filter((rating)=>{
-               return rating.rateType === POSITIVE;
-           })
-       },
-      negative(){
-        return this.ratings.filter((rating)=>{
+      positives() {
+        return this.ratings.filter((rating) => {
+          return rating.rateType === POSITIVE;
+        });
+      },
+      negatives() {
+        return this.ratings.filter((rating) => {
           return rating.rateType === NAVIGATE;
-        })
+        });
       }
     }
   }

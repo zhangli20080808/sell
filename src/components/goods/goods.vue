@@ -123,7 +123,7 @@
         this.foodsScroll.scrollTo(0, -this.listHeight[index], 300)
       },
       goDetail(food){
-//          console.log(food)
+          console.log(food)
         this.selectedFood = food;
         this.$nextTick(()=>{
           this.$refs.myFood.show()
