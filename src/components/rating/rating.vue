@@ -26,21 +26,17 @@
       </div>
       <split></split>
       <div class="evaluation">
-        <div class="classify">
-          <span v-for="(item,index) in classifyArr" class="item"
-                :class="{'active':item.active,'bad':index==2,'badActive':item.active&&index==2}"
-                @click="filterEvel(item)">
-            {{item.name}}<span class="count">{{item.count}}</span>
-          </span>
-        </div>
-        <div class="switch" @click="evelflag=!evelflag">
-          <span class="icon-check_circle" :class="{'on':evelflag}"></span>
-          <span class="text">只看有内容的评价</span>
-        </div>
+        <ratingselect
+          @select="selectRating"
+          @toggle="toggleContent"
+          :selectType="selectType"
+          :onlyContent="onlyContent"
+          :ratings="ratings">
+        </ratingselect>
 
         <div class="evel-list">
           <ul>
-            <li class="evel" v-for="evel in evelArr">
+            <li class="evel" v-for="evel in ratings" v-show="needShow(evel.rateType, evel.text)">
               <div class="avatar">
                 <img :src="evel.avatar" width="28" height="28">
               </div>
@@ -74,55 +70,28 @@
   import star from  '@/components/star/star'
   import split from '@/components/split/split'
   import BScroll from 'better-scroll'
-
+  import ratingselect from '@/components/ratingselect/ratingselect';
 
   var ERR_OK = 0;
+  const ALL = 2;
   export default{
     name: 'rating',
     data(){
       return {
         ratings: [],
-        classifyArr: [{
-          name: '全部',
-          count: 0,
-          active: true
-        }, {
-          name: '推荐',
-          count: 0,
-          active: false
-        }, {
-          name: '吐槽',
-          count: 0,
-          active: false
-        }],
-        evelflag: true
+        selectType: ALL,
+        onlyContent: true
       }
     },
     props: {
-      food: Object,
       seller:Object
     },
     computed: {
-      evelArr() {
-        let selectIndex = 0;
-        this.classifyArr.forEach((data, index) => {
-          if (data.active) {
-            selectIndex = index
-          }
-        });
-        if (this.scroll) {
-          this.$nextTick(() => {
-            this.scroll.refresh()
-          })
-        }
-        return selectIndex ? this.ratings.filter((data) =>
-          this.evelflag ? data.rateType === selectIndex - 1 && data.text : data.rateType === selectIndex - 1)
-          : this.ratings.filter((data) => this.evelflag ? data.text : true)
-      }
     },
     components: {
       star,
-      split
+      split,
+      ratingselect
     },
     mounted(){
       this._init();
@@ -133,7 +102,6 @@
 //                      console.log(res.data.ratings)
           if (res.data.errno === ERR_OK) {
             this.ratings = res.data.ratings;
-            this._initClassifyArr();
             // 当我们计算一些和dom相关的操作时  一定要保证dom已经渲染结束了
             this.$nextTick(() => {
               this.scroll = new BScroll(this.$refs.ratingsWrapper, {
@@ -143,15 +111,27 @@
           }
         });
       },
-      _initClassifyArr(){
-        this.classifyArr.forEach((data, index) => {
-          if (index) {
-            data.count = this.ratings.filter((temp) =>
-            temp.rateType === index - 1).length
-          } else {
-            data.count = this.ratings.length;
-          }
-        })
+      needShow(type, text) {
+        if (this.onlyContent && !text) {
+          return false;
+        }
+        if (this.selectType === ALL) {
+          return true;
+        } else {
+          return type === this.selectType;
+        }
+      },
+      selectRating(type) {
+        this.selectType = type;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
+      },
+      toggleContent() {
+        this.onlyContent = !this.onlyContent;
+        this.$nextTick(() => {
+          this.scroll.refresh();
+        });
       },
       filterEvel(item){
         this.classifyArr.forEach((data) => {

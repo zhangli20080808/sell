@@ -22,34 +22,18 @@
             <h2>起送价</h2>
             <div class="content">
               <span class="num">{{seller.minPrice}}</span>元
-
-
-
-
-
-
             </div>
           </div>
           <div class="block">
             <h2>商家配送</h2>
             <div class="content">
               <span class="num">{{seller.deliveryPrice}}</span>元
-
-
-
-
-
-
             </div>
           </div>
           <div class="block">
             <h2>平均配送时间</h2>
             <div class="content">
               <span class="num">{{seller.deliveryTime}}</span>分钟
-
-
-
-
             </div>
           </div>
         </div>
@@ -63,10 +47,6 @@
           <h1>公告与活动</h1>
           <div class="content">
             {{seller.bulletin}}
-
-
-
-
           </div>
         </div>
       </div>
@@ -169,6 +149,7 @@
             if (!this.picScroll) {
               this.picScroll = new BScroll(this.$refs.picsWrapper, {
                 scrollX: true,
+                //让我们的外层的这个是可以竖向滚动的  水平的时候忽略了竖向的滚动
                 eventPassthrough: 'vertical'
               });
             } else {
