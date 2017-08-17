@@ -6,6 +6,7 @@ var merge = require('webpack-merge')
 var baseWebpackConfig = require('./webpack.base.conf')
 var CopyWebpackPlugin = require('copy-webpack-plugin')
 var HtmlWebpackPlugin = require('html-webpack-plugin')
+//可以编译过程中单独的css文件提取出来，形成单独的文件，而不是打包到js文件中
 var ExtractTextPlugin = require('extract-text-webpack-plugin')
 var OptimizeCSSPlugin = require('optimize-css-assets-webpack-plugin')
 
@@ -15,12 +16,16 @@ var webpackConfig = merge(baseWebpackConfig, {
   module: {
     rules: utils.styleLoaders({
       sourceMap: config.build.productionSourceMap,
+      //表示可以提取css文件
       extract: true
     })
   },
+  //可以生成source.map
   devtool: config.build.productionSourceMap ? '#source-map' : false,
   output: {
+    //当前目录下的dist目录
     path: config.build.assetsRoot,
+    //传入这个字符串完成  这个哈西值是根据我们最终生成的文件计算而来的
     filename: utils.assetsPath('js/[name].[chunkhash].js'),
     chunkFilename: utils.assetsPath('js/[id].[chunkhash].js')
   },
@@ -29,6 +34,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     new webpack.DefinePlugin({
       'process.env': env
     }),
+    //压缩js代码
     new webpack.optimize.UglifyJsPlugin({
       compress: {
         warnings: false
@@ -79,6 +85,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     }),
     // extract webpack runtime and module manifest to its own file in order to
     // prevent vendor hash from being updated whenever app bundle is updated
+    //把我们依赖打包的一些三方库 弄到一个里面
     new webpack.optimize.CommonsChunkPlugin({
       name: 'manifest',
       chunks: ['vendor']
@@ -93,7 +100,7 @@ var webpackConfig = merge(baseWebpackConfig, {
     ])
   ]
 })
-
+//开启gzip
 if (config.build.productionGzip) {
   var CompressionWebpackPlugin = require('compression-webpack-plugin')
 
